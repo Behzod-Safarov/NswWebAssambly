@@ -1,0 +1,331 @@
+﻿@page "/nsw_flamesensor"
+@inject IJSRuntime JSRuntime
+@inherits LayoutComponentBase
+<NSWLayout />
+<br>
+<br>
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center">NSW olov datchigi</h1>
+    <p class="lead text-center">Olovni aniqlash va xavfsizlikni ta’minlash uchun NSW olov datchigidan foydalaning</p>
+
+    <div class="my-5">
+        <h2>Umumiy ma’lumot</h2>
+        <p>NSW olov datchigi olov va infraqizil nurlarni aniqlash uchun mo‘ljallangan. Ushbu datchik olov xavfsizligi tizimlari, robototexnika va ta’lim loyihalarida keng qo‘llaniladi. U Arduino va boshqa mikrokontrollerlar bilan mos keladi.</p>
+        <div class="image-container">
+            <img src="Images/nsw_flamesensor.jpg" alt="NSW olov datchigi" class="img-fluid rounded shadow my-3" style="max-width: 150px;" loading="lazy">
+            <p class="image-caption">NSW olov datchigi – olovni aniqlash uchun</p>
+        </div>
+    </div>
+
+    <div class="my-5">
+        <h2>Asosiy xususiyatlar</h2>
+        <ul>
+            <li>Ishlash kuchlanishi: 3.3V–5V DC</li>
+            <li>Olovni aniqlash burchagi: 60°</li>
+            <li>Masofa diapazoni: 0–1 m</li>
+            <li>Modul hajmi: 30×20×10 mm</li>
+        </ul>
+    </div>
+
+    <div class="my-5">
+        <h2>Ilovalar</h2>
+        <p>NSW olov datchigi quyidagi loyihalarda qo‘llaniladi:</p>
+        <ul>
+            <li>Olov xavfsizligi tizimlari</li>
+            <li>Robototexnikada olovni aniqlash</li>
+            <li>Ovozli ogohlantirish tizimlari</li>
+            <li>Mustaqil gadjetlar</li>
+            <li>Ta’lim loyihalari</li>
+        </ul>
+    </div>
+
+    <div class="my-5">
+        <h2>Pin ta’rifi</h2>
+        <p>NSW olov datchigi quyidagi pinlarga ega:</p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Pin</th>
+                    <th>Vazifasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GND</td>
+                    <td>Manfiy quvvat </td>
+                </tr>
+                <tr>
+                    <td>VCC</td>
+                    <td>Quvvat manbai (3.3V yoki 5V)</td>
+                </tr>
+                <tr>
+                    <td>D0</td>
+                    <td>Raqamli chiqish (HIGH/LOW)</td>
+                </tr>
+                <tr>
+                    <td>A0</td>
+                    <td>Analog chiqish (0–1023)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="my-5">
+        <h2>Simlarni ulash rejimi</h2>
+        <p>● RJ25 bilan ulanish</p>
+        <p>NSW olov datchigi qora rangga ega bo‘lib, RJ25 porti orqali NSW boshqaruv platasining qora rangli portlariga ulanadi.</p>
+        @* <div class="image-container">
+            <img src="Images/nsw_flamesensor_rj25.jpg" alt="Olov datchigi RJ25 ulanishi" class="img-fluid rounded shadow my-3" style="max-width: 400px;" loading="lazy">
+            <p class="image-caption">RJ25 porti orqali ulanish sxemasi</p>
+        </div>
+
+        <p>● Dupont simi bilan ulanish</p>
+        <p>Dupont simi yordamida modulni Arduino UNO platasiga ulashda D0 yoki A0 pinlari mos ravishda raqamli yoki analog pinga (masalan, A0) ulanadi.</p>
+        <div class="image-container">
+            <img src="Images/nsw_flamesensor_dupont.jpg" alt="Olov datchigi Dupont ulanishi" class="img-fluid rounded shadow my-3" style="max-width: 400px;" loading="lazy">
+            <p class="image-caption">Dupont simi orqali ulanish sxemasi</p>
+        </div> *@
+    </div>
+
+    <div class="my-5">
+        <h2>Dasturlash bo‘yicha qo‘llanma</h2>
+        <p>Arduino IDE yordamida NSW olov datchigini boshqarish uchun qo‘shimcha kutubxonalar talab qilinmaydi ammo <code>NswFlameSensor.h</code> kutubxonasi orqali soddaroq kod yozish mumkin. Quyidagi kod olov aniqlanganda buzzer orqali ogohlantirish beradi.</p>
+        
+        <div class="code-container">
+            <div class="code-header">
+                <span>Arduino dastur namunasi</span>
+                <button class="copy-btn" onclick="copyCode(this)" title="Nusxa olish">Nusxa olish</button>
+            </div>
+            <pre class="line-numbers"><code class="language-cpp">
+#include "NswFlameSensor.h"
+
+// Olov sensori PORT_1 da ishga tushiriladi (pin1 = 2, pin2 = 3)
+// Bu yerda sensorning analog signali pin2 (3) va raqamli signali pin1 (2) ga ulanadi
+NswFlameSensor olov(PORT_1);
+
+void setup() {
+  // Serial aloqani boshlash, tezligi 9600 baud
+  // Bu kompyuter bilan ma'lumot almashish uchun ishlatiladi
+  Serial.begin(9600);
+
+  // Olov sensorini ishga tushirish
+  // Pinlarni kirish sifatida sozlaydi (analog va raqamli)
+  olov.begin();
+}
+
+void loop() {
+  // Analog qiymatni o'qish (0-1023 oralig'ida)
+  // Bu olovning intensivligini ko'rsatadi, yaqinroq olov kichikroq qiymat beradi
+  int analogQiymat = olov.readAnalog();
+
+  // Raqamli qiymatni o'qish (true yoki false)
+  // True - olov bor (pin1 LOW), False - olov yo'q (pin1 HIGH)
+  bool raqamliQiymat = olov.readDigital();
+
+  // Olov aniqlanganligini tekshirish, chegarasi 500
+  // Agar analog qiymat 500 dan kichik bo'lsa, olov bor deb hisoblanadi
+  bool olovAniqlandi = olov.isFlameDetected(500);
+
+  // Natijalarni Serial Monitor ga chiqarish
+  Serial.print("Analog: ");          // "Analog:" so'zini chiqaradi
+  Serial.print(analogQiymat);        // Analog qiymatni chiqaradi
+  Serial.print("  Raqamli: ");       // "Raqamli:" so'zini chiqaradi
+  Serial.print(raqamliQiymat ? "Olov" : "Olov yo'q");  // Olov bor yoki yo'qligini ko'rsatadi
+  Serial.print("  Aniqlangan: ");    // "Aniqlangan:" so'zini chiqaradi
+  Serial.println(olovAniqlandi ? "Ha" : "Yo'q");       // Ha yoki Yo'q chiqaradi
+
+  // 1 soniya kutish (1000 millisekund)
+  // Har bir o'qishdan keyin yangi ma'lumot olish uchun pauza
+  delay(1000);
+}
+            </code></pre>
+        </div>
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+    </div>
+
+    <div class="my-5">
+        <h2>Umumiy tahlil</h2>
+        <p>NSW olov datchigi infraqizil nurlarni aniqlash orqali olovni sezadi. D0 pini raqamli signal (HIGH/LOW), A0 pini esa analog signal (0–1023) chiqaradi. Modulning kichik o‘lchami va soddaligi uni olov xavfsizligi tizimlari, robototexnika va ta’lim loyihalari uchun qulay qiladi.</p>
+    </div>
+
+    <div class="text-center my-5">
+        <a class="btn btn-lg custom-btn shadow-lg mx-2" href="/nsw_dcmotor" role="button">
+            <i class="fas fa-arrow-left"></i> Oldingi
+        </a>
+        <a class="btn btn-lg custom-btn shadow-lg mx-2" href="/nsw_gassensor" role="button">
+            Keyingi <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</div>
+
+<style>
+.custom-btn {
+    background: linear-gradient(135deg, rgb(0, 217, 255), rgb(0, 150, 200));
+    color: white;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.custom-btn:hover {
+    background: linear-gradient(135deg, rgb(0, 150, 200), rgb(0, 217, 255));
+    transform: scale(1.05);
+    box-shadow: 0px 5px 15px rgba(0, 217, 255, 0.4);
+}
+
+.custom-btn i {
+    margin: 0 8px;
+}
+
+.code-container {
+    position: relative;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+    border-radius: 12px;
+    margin: 2rem 0;
+    padding: 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 2px solid #007bff;
+    transition: transform 0.3s ease;
+}
+
+.code-container:hover {
+    transform: translateY(-5px);
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    padding: 12px 20px;
+    border-bottom: 1px solid #004085;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.copy-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.copy-btn:hover {
+    background: #218838;
+    transform: scale(1.05);
+}
+
+.copy-btn.copied {
+    background: #17a2b8;
+}
+
+.copy-btn.copied::after {
+    content: "Nusxa olindi!";
+    position: absolute;
+    top: -30px;
+    right: 0;
+    background: #17a2b8;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    animation: fadeInOut 1.5s ease;
+}
+
+@@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(10px); }
+    20% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+}
+
+pre.line-numbers {
+    margin: 0;
+    padding: 20px;
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 0 0 12px 12px;
+}
+
+code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 15px;
+}
+
+.prism-coy .line-numbers-rows {
+    border-right: 1px solid #ddd;
+    padding-right: 10px;
+    margin-right: 10px;
+}
+
+.image-container {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.img-fluid {
+    transition: transform 0.3s ease, box-shadow  корпус 0.3s ease;
+    border: 2px solid transparent;
+    background: linear-gradient(135deg, #007bff, #00d4ff) border-box;
+    border-radius: 10px;
+}
+
+.img-fluid:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+}
+
+.image-caption {
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+    font-style: italic;
+}
+</style>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("scrollToTop");
+    }
+}
+
+<script>
+    window.scrollToTop = function () {
+        window.scrollTo(0, 0);
+    };
+
+    function copyCode(button) {
+        const code = button.parentElement.nextElementSibling.querySelector('code').textContent;
+        navigator.clipboard.writeText(code).then(() => {
+            button.classList.add('copied');
+            button.textContent = 'Nusxa olindi!';
+            setTimeout(() => {
+                button.classList.remove('copied');
+                button.textContent = 'Nusxa olish';
+            }, 2000);
+        });
+    }
+</script>

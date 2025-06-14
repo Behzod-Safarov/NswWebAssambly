@@ -1,0 +1,327 @@
+﻿```razor
+@page "/nsw_ledmatrix"
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+<NSWLayout />
+<br>
+<br>
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center">NSW LED Matrix Moduli</h1>
+    <p class="lead text-center">Grafik va animatsiyalarni yorqin ko‘rsating</p>
+
+    <div class="my-5">
+        <h2>Umumiy ma’lumot</h2>
+        <p>NSW LED Matrix Moduli 8×16 matritsada joylashgan LED chiroqlardan iborat bo‘lib, grafikalar, matnlar va animatsiyalarni ko‘rsatish uchun mo‘ljallangan. Ushbu modul robototexnika, displey tizimlari va turli loyihalarda keng qo‘llaniladi. U Arduino va boshqa mikrokontrollerlar bilan mos keladi.</p>
+        <div class="image-container">
+            <img src="Images/nsw_ledmatrix1.jpg" alt="NSW LED Matrix Moduli" class="img-fluid rounded shadow my-3" style="max-width: 200px;" loading="lazy">
+            <p class="image-caption">NSW LED Matrix Moduli – yorqin grafik ko‘rsatish</p>
+        </div>
+    </div>
+
+    <div class="my-5">
+        <h2>Asosiy xususiyatlar</h2>
+        <ul>
+            <li>Ishlash kuchlanishi: 3.3V–5V DC</li>
+            <li>Matritsa o‘lchami: 8×16 LED</li>
+            <li>Har bir LED uchun individual boshqaruv</li>
+            <li>Modul hajmi: 60×120×10 mm </li>
+        </ul>
+    </div>
+
+    <div class="my-5">
+        <h2>Ilovalar</h2>
+        <p>NSW LED Matrix Moduli quyidagi loyihalarda qo‘llanilishi mumkin:</p>
+        <ul>
+            <li>Robototexnika</li>
+            <li>Displey tizimlari</li>
+            <li>O‘yin qurilmalari</li>
+            <li>Mustaqil gadjetlar</li>
+            <li>Ta’lim loyihalari</li>
+        </ul>
+    </div>
+
+    <div class="my-5">
+        <h2>Pin ta’rifi</h2>
+        <p>NSW LED Matrix Modulida quyidagi pinlar mavjud:</p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Pin</th>
+                    <th>Vazifasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GND</td>
+                    <td>Manfiy quvvat</td>
+                </tr>
+                <tr>
+                    <td>VCC</td>
+                    <td>Quvvat manbai (3.3V yoki 5V)</td>
+                </tr>
+                <tr>
+                    <td>DIN</td>
+                    <td>Ma’lumot kiritish</td>
+                </tr>
+                <tr>
+                    <td>CLK</td>
+                    <td>Soat signali</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="my-5">
+        <h2>Simlarni ulash rejimi</h2>
+        <p>● RJ25 bilan ulanish</p>
+        <p>NSW LED Matrix Moduli RJ25 porti orqali ulanadi. Boshqarish platasidagi RJ25 portidan foydalanganda, uni ko'k rangli portga ulashingiz kerak.</p>
+        @* <div class="image-container">
+            <img src="Images/nsw_ledmatrix_rj25.jpg" alt="NSW LED Matrix RJ25 ulanishi" class="img-fluid rounded shadow my-3" style="max-width: 400px;" loading="lazy">
+            <p class="image-caption">RJ25 porti orqali ulanish sxemasi</p>
+        </div>
+
+        <p>● Dupont simi bilan ulanish</p>
+        <p>Dupont simi yordamida modulni Arduino UNO platasiga ulashda DIN, CS va CLK pinlarini raqamli pinlarga ulash lozim.</p>
+        <div class="image-container">
+            <img src="Images/nsw_ledmatrix_dupont.jpg" alt="NSW LED Matrix Dupont ulanishi" class="img-fluid rounded shadow my-3" style="max-width: 400px;" loading="lazy">
+            <p class="image-caption">Dupont simi orqali ulanish sxemasi</p>
+        </div> *@
+    </div>
+
+    <div class="my-5">
+        <h2>Dasturlash bo‘yicha qo‘llanma</h2>
+        <p>Arduino dasturlash</p>
+        <p>
+            Arduino IDE yordamida NSW LED Matrix Modulini boshqarish uchun 
+            <a href="https://github.com/Behzod-Safarov/Nswblock-Libraries" target="_blank">Nswblock-Libraries</a> 
+            kutubxonasi ishlatiladi. Quyidagi dasturdan namuna sifatida foydalanish mumkin.
+        </p>
+
+        <div class="code-container">
+            <div class="code-header">
+                <span>Arduino dastur namunasi</span>
+                <button class="copy-btn" onclick="copyCode(this)" title="Nusxa olish">Nusxa olish</button>
+            </div>
+<pre class="line-numbers"><code class="language-cpp">
+#include "NswLEDMatrix.h"  // 📌 NswBlock LED Matriks kutubxonasini chaqiramiz
+
+// 📌 LED matriksni PORT_4 ga ulaymiz (PORT_4 = 8, 9)
+NswLEDMatrix ledMx(PORT_4);
+
+void setup() {
+    ledMx.setBrightness(6);  // 📌 Yorqinlik darajasini 6 ga sozlaymiz (0-7 oralig‘ida)
+    ledMx.setColorIndex(1);  // 📌 Rang indeksini o‘rnatamiz (agar mavjud bo‘lsa)
+}
+
+char *s = "AB";  // 📌 Ekranda chiqariladigan matn
+
+void loop() {
+    ledMx.showClock(12, 03, 1);  // 📌 LED ekranda soat 12:03 ni ko‘rsatamiz
+    delay(2000);  // 2 soniya kutamiz
+
+    ledMx.drawStr(0, 7, s);  // 📌 "AB" matnini 0,7 koordinatasida chiqaramiz
+    delay(2000);  // 2 soniya kutamiz
+
+    ledMx.showNum(1.23);  // 📌 LED ekranda 1.23 sonini chiqaramiz
+    delay(2000);  // 2 soniya kutamiz
+
+    ledMx.fillScreen();
+    delay(2000);
+}
+
+</code></pre>
+        </div>
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+
+        <style>
+        .code-container {
+            position: relative;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+            border-radius: 12px;
+            margin: 2rem 0;
+            padding: 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 2px solid #007bff;
+            transition: transform 0.3s ease;
+        }
+
+        .code-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            padding: 12px 20px;
+            border-bottom: 1px solid #004085;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .copy-btn.copied {
+            background: #17a2b8;
+        }
+
+        .copy-btn.copied::after {
+            content: "Nusxa olindi!";
+            position: absolute;
+            top: -30px;
+            right: 0;
+            background: #17a2b8;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            animation: fadeInOut 1.5s ease;
+        }
+
+        @@keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        pre.line-numbers {
+            margin: 0;
+            padding: 20px;
+            overflow-x: auto;
+            background: #fff;
+            border-radius: 0 0 12px 12px;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 15px;
+        }
+
+        .prism-coy .line-numbers-rows {
+            border-right: 1px solid #ddd;
+            padding-right: 10px;
+            margin-right: 10px;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .img-fluid {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, #007bff, #00d4ff) border-box;
+            border-radius: 10px;
+        }
+
+        .img-fluid:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+        }
+
+        .image-caption {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        </style>
+
+        <script>
+        function copyCode(button) {
+            const code = button.parentElement.nextElementSibling.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.classList.add('copied');
+                button.textContent = 'Nusxa olindi!';
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.textContent = 'Nusxa olish';
+                }, 2000);
+            });
+        }
+        </script>
+    </div>
+
+    <div class="my-5">
+        <h3>Umumiy tahlil</h3>
+        <p>NSW LED Matrix Moduli 8×16 LED matritsadan iborat bo‘lib, grafikalar, matnlar va animatsiyalarni ko‘rsatishga mo‘ljallangan. DIN va CLK pinlari orqali ma’lumot uzatiladi, bu esa har bir LEDni mustaqil ravishda boshqarish imkonini beradi.</p>
+    </div>
+
+    <div class="text-center my-5">
+        <a class="btn btn-lg custom-btn shadow-lg mx-2" href="/nsw_joystick" role="button">
+            <i class="fas fa-arrow-left"></i> Oldingi
+        </a>
+        <a class="btn btn-lg custom-btn shadow-lg mx-2" href="/nsw_lightsensor" role="button">
+            Keyingi <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</div>
+
+<style>
+.custom-btn {
+    background: linear-gradient(135deg, rgb(0, 217, 255), rgb(0, 150, 200));
+    color: white;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.custom-btn:hover {
+    background: linear-gradient(135deg, rgb(0, 150, 200), rgb(0, 217, 255));
+    transform: scale(1.05);
+    box-shadow: 0px 5px 15px rgba(0, 217, 255, 0.4);
+}
+
+.custom-btn i {
+    margin: 0 8px;
+}
+</style>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("scrollToTop");
+    }
+}
+
+<script>
+    window.scrollToTop = function () {
+        window.scrollTo(0, 0);
+    };
+</script>
+```

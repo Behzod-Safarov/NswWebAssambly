@@ -1,0 +1,64 @@
+﻿@using System.Security.Claims
+@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<div class="page">
+    <header class="navmenu">
+        <div class="navmenu-content">
+            <div class="logo-container">
+                <a href="/"><img src="logo.png" alt="Logo" class="logo"></a>
+            </div>
+            <div class="hamburger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a class="btn" href="/nsw_4button">Qo'llanma</a></li>
+                    <li><a class="btn" href="https://robomarket.uz/">Maxsulotlar</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const hamburgerMenu = document.querySelector(".hamburger-menu");
+        const nav = document.querySelector("nav");
+
+        hamburgerMenu.addEventListener("click", function() {
+            hamburgerMenu.classList.toggle("active");
+            nav.classList.toggle("active");
+        });
+
+        document.querySelectorAll("nav ul li a").forEach(link => {
+            link.addEventListener("click", () => {
+                hamburgerMenu.classList.remove("active");
+                nav.classList.remove("active");
+            });
+        });
+
+        document.addEventListener("click", function(event) {
+            if (!nav.contains(event.target) && !hamburgerMenu.contains(event.target)) {
+                hamburgerMenu.classList.remove("active");
+                nav.classList.remove("active");
+            }
+        });
+    });
+</script>
+

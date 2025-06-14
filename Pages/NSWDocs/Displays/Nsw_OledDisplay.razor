@@ -1,0 +1,357 @@
+```razor
+@page "/nsw_oleddisplay"
+@inject IJSRuntime JSRuntime
+<NSWLayout />
+<br>
+<br>
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center">NSW OLED Display Moduli</h1>
+    <p class="lead text-center">Loyihalaringizga grafik va matnli interfeys qo‘shing</p>
+
+    <div class="my-5">
+        <h2>Umumiy ma’lumot</h2>
+        <p>NSW OLED Display Moduli 0.96 dyuymli, 128×64 pikselli ekran bo‘lib, ko‘k yoki oq rangda matn, grafik va belgilarni ko‘rsatadi. I2C interfeysi orqali ishlaydi va Arduino kabi mikrokontrollerlar bilan mos keladi. Kam quvvat sarfi va kompakt o‘lchami uni turli elektron loyihalar uchun ideal qiladi.</p>
+        <div class="image-container">
+            <img src="Images/oledDisplay.jpg" alt="NSW OLED Display Moduli" class="img-fluid rounded shadow my-3" style="max-width: 150px;" loading="lazy">
+            <p class="image-caption">NSW OLED Display Moduli – yuqori kontrastli ko‘rsatish</p>
+        </div>
+    </div>
+
+    <div class="my-5">
+        <h2>Asosiy xususiyatlar</h2>
+        <ul>
+            <li>Displey o‘lchami: 0.96 dyuym</li>
+            <li>Ruxsat: 128×64 piksel</li>
+            <li>Interfeys: I2C (SCL, SDA)</li>
+            <li>Ishlash kuchlanishi: 3.3V–5V</li>
+            <li>Chastota: 400 kHz (I2C)</li>
+            <li>Energiya sarfi: Juda kam</li>
+            <li>Chip: SSD1306 drayver chipi</li>
+        </ul>
+        <p>Eslatma: OLED texnologiyasi fon yoritgichsiz yuqori kontrastli tasvirni ta’minlaydi.</p>
+    </div>
+
+    <div class="my-5">
+        <h2>Ilovalar</h2>
+        <p>NSW OLED Display Moduli quyidagi sohalarda qo‘llaniladi:</p>
+        <ul>
+            <li>Robototexnika va IoT qurilmalari interfeysi</li>
+            <li>Harorat, namlik va bosim sensorlari natijalarini ko‘rsatish</li>
+            <li>Mini o‘yinlar va animatsiyalar</li>
+            <li>Real vaqtdagi soat ko‘rsatkichi</li>
+            <li>Matnli xabarlar va grafik interfeyslar</li>
+        </ul>
+    </div>
+
+    <div class="my-5">
+        <h2>Pin ta’rifi</h2>
+        <p>NSW OLED Display Modulida 4 ta pin mavjud:</p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Pin</th>
+                    <th>Vazifasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GND</td>
+                    <td>Manfiy quvvat </td>
+                </tr>
+                <tr>
+                    <td>VCC</td>
+                    <td>Quvvat manbai (3.3V yoki 5V)</td>
+                </tr>
+                <tr>
+                    <td>SCL</td>
+                    <td>Soat signali (I2C interfeys)</td>
+                </tr>
+                <tr>
+                    <td>SDA</td>
+                    <td>Ma’lumot signali (I2C interfeys)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="my-5">
+        <h2>Simlarni ulash rejimi</h2>
+        <p>Arduino UNO bilan ulanish (I2C):</p>
+        
+        <p>● RJ25 bilan ulanish</p>
+        <p>NSW OLED RJ25 porti orqali ulanadi. Boshqarish platasidagi RJ25 portidan foydalanganda, uni oq rangli portga ulashingiz kerak.</p>
+        @* <div class="image-container">
+            <img src="Images/oled_arduino_connection.jpg" alt="OLED Arduino bilan ulanishi" class="img-fluid rounded shadow my-3" style="max-width: 400px;" loading="lazy">
+            <p class="image-caption">Arduino UNO bilan I2C ulanish sxemasi</p>
+        </div> *@
+
+        <p>● I2C bilan ulanish</p>
+        <p>Arduino UNO bilan I2C interfeysi orqali ulanish sxemasi:</p>
+        <ul>
+            <li><b>VCC</b> → 5V</li>
+            <li><b>GND</b> → GND</li>
+            <li><b>SCL</b> → A5 (Arduino UNO)</li>
+            <li><b>SDA</b> → A4 (Arduino UNO)</li>
+        </ul>
+    </div>
+
+    <div class="my-5">
+        <h2>Dasturlash bo‘yicha qo‘llanma</h2>
+        <p>Arduino IDE yordamida OLED displeyga turli belgilarni namoyish etish uchun Nswblock-Libraries kutubxonasini o‘rnating. Quyidagi dastur namunasi displeyda matn ko‘rsatadi.</p>
+        
+        <div class="code-container">
+            <div class="code-header">
+                <span>Arduino dastur namunasi</span>
+                <button class="copy-btn" onclick="copyCode(this)" title="Nusxa olish">Nusxa olish</button>
+            </div>
+<pre class="line-numbers"><code class="language-cpp">
+
+#include "NswOledDisplay.h"
+
+// OLED displey obyektini 1-portga ulaymiz
+NswOledDisplay oled(PORT_1);
+
+void setup() {
+    Serial.begin(9600);  // Serial portni 9600 tezlikda ishga tushuramiz
+    while (!Serial);     // Serial monitor tayyor bo‘lguncha kutamiz
+    Serial.println("Ishga tushirilmoqda...");
+
+    // Agar displey ishga tushmasa, xatolik haqida xabar chiqariladi va dastur to‘xtaydi
+    if (!oled.begin()) {
+        Serial.println("OLED ishga tushmadi!");
+        while (1);  // Cheksiz kutish
+    }
+    Serial.println("OLED ishga tushdi");
+
+    oled.clear();          // Ekranni tozalaymiz
+    oled.setContrast(127); // Yorqinlikni o‘rtacha darajada belgilaymiz
+    oled.setRotation(0);   // Displey orientatsiyasini to‘g‘rilaymiz
+    oled.setTextSize(1);   // Matn o‘lchamini 1 ga belgilaymiz
+    oled.setCursor(0, 0);  // Kursorni yuqori chap burchakka qo‘yamiz
+
+    oled.println("Raqamlar: 0123456789");  // Raqamlar yoziladi
+    oled.println("Katta: ABCDEF");         // Katta harflar test qilinadi
+    oled.println("Kichik: abcdef");        // Kichik harflar test qilinadi
+    oled.display();                        // Displey yangilanadi
+
+    Serial.println("Displey yangilandi");
+}
+
+void loop() {
+    oled.clear();          // Har bir aylanishda displey tozalanadi
+    oled.setCursor(0, 0);  // Kursor boshiga qaytadi
+    oled.setTextSize(1);   // Matn o‘lchami o‘zgarmaydi
+
+    oled.print("Vaqt: ");
+    oled.println(millis() / 1000);  // Ishlagan vaqtni soniyalarda ko‘rsatadi
+
+    oled.println("Test: AbCdEf");   // Aralash harflarni ko‘rsatadi
+    oled.display();                 // Displey yangilanadi
+
+    delay(1000);                    // 1 soniya kutadi
+}
+
+            </code></pre>
+        </div>
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+
+        <style>
+        .code-container {
+            position: relative;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+            border-radius: 12px;
+            margin: 2rem 0;
+            padding: 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 2px solid #007bff;
+            transition: transform 0.3s ease;
+        }
+
+        .code-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            padding: 12px 20px;
+            border-bottom: 1px solid #004085;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .copy-btn.copied {
+            background: #17a2b8;
+        }
+
+        .copy-btn.copied::after {
+            content: "Nusxa olindi!";
+            position: absolute;
+            top: -30px;
+            right: 0;
+            background: #17a2b8;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            animation: fadeInOut 1.5s ease;
+        }
+
+        @@keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        pre.line-numbers {
+            margin: 0;
+            padding: 20px;
+            overflow-x: auto;
+            background: #fff;
+            border-radius: 0 0 12px 12px;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 15px;
+        }
+
+        .prism-coy .line-numbers-rows {
+            border-right: 1px solid #ddd;
+            padding-right: 10px;
+            margin-right: 10px;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .img-fluid {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, #007bff, #00d4ff) border-box;
+            border-radius: 10px;
+        }
+
+        .img-fluid:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+        }
+
+        .image-caption {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        </style>
+
+        <script>
+        function copyCode(button) {
+            const code = button.parentElement.nextElementSibling.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.classList.add('copied');
+                button.textContent = 'Nusxa olindi!';
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.textContent = 'Nusxa olish';
+                }, 2000);
+            });
+        }
+        </script>
+    </div>
+
+    <div class="my-5">
+        <h2>Umumiy tahlil</h2>
+        <p>NSW OLED Display Moduli SSD1306 chipi asosida ishlaydi va I2C interfeysi orqali ma’lumotlarni uzatadi. Har bir piksel mustaqil ravishda yoqilib-o‘chiriladi, bu esa yuqori kontrast va aniq tasvirni ta’minlaydi. Kam quvvat sarfi va kichik o‘lchami tufayli u IoT qurilmalari, sensor ma’lumotlari ko‘rsatkichi va interaktiv loyihalar uchun samarali yechimdir.</p>
+    </div>
+
+    <div class="text-center my-5">
+        <a class="btn btn-lg custom-btn shadow-lg mx-2" href="/nsw_ultrasonicsensor" role="button">
+            <i class="fas fa-arrow-left"></i> Oldingi
+        </a>
+        <a class="btn btn-lg custom-btn shadow-lg mx-2" href="/nsw_buzzer" role="button">
+            Keyingi <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</div>
+
+<style>
+.custom-btn {
+    background: linear-gradient(135deg, rgb(0, 217, 255), rgb(0, 150, 200));
+    color: white;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.custom-btn:hover {
+    background: linear-gradient(135deg, rgb(0, 150, 200), rgb(0, 217, 255));
+    transform: scale(1.05);
+    box-shadow: 0px 5px 15px rgba(0, 217, 255, 0.4);
+}
+
+.custom-btn i {
+    margin: 0 8px;
+}
+</style>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("scrollToTop");
+        await JSRuntime.InvokeVoidAsync("openNavMenu");
+    }
+}
+
+<script>
+    window.scrollToTop = function () {
+        window.scrollTo(0, 0);
+    };
+
+    window.openNavMenu = function () {
+        let toggler = document.querySelector('.navbar-toggler');
+        if (toggler && !toggler.checked) {
+            toggler.click();
+        }
+    };
+</script>
+```

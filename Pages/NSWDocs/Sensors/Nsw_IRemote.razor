@@ -1,0 +1,261 @@
+@page "/nsw_irremote"
+@inject IJSRuntime JSRuntime
+@inherits LayoutComponentBase
+<NSWLayout />
+<br>
+<br>
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center">NSW infraqizil masofadan boshqaruv moduli</h1>
+    <p class="lead text-center">Loyihalaringizni infraqizil pult orqali qulay boshqaring</p>
+
+    <div class="my-5">
+        <h2>Umumiy ma’lumot</h2>
+        <p>NSW infraqizil masofadan boshqaruv moduli infraqizil (IR) texnologiyasiga asoslangan bo‘lib, qurilmalarni masofadan boshqarish imkonini beradi. Modul masofadan boshqaruv pulti va qabul qiluvchi qismdan iborat bo‘lib, turli tugmalar orqali Arduino yoki boshqa mikrokontrollerga buyruqlar yuboradi. U odatda televizor pultiga o‘xshash IR signallar jo‘natadi, qabul qiluvchi esa ushbu signallarni raqamli shaklga aylantiradi.</p>
+        <div class="image-container">
+            <img src="Images/remote.jpg" alt="NSW infraqizil masofadan boshqaruv moduli" class="img-fluid rounded shadow my-3" style="max-width: 150px;" loading="lazy">
+            <p class="image-caption">NSW infraqizil masofadan boshqaruv moduli – masofaviy boshqaruv uchun</p>
+        </div>
+    </div>
+
+    <div class="my-5">
+        <h2>Asosiy xususiyatlar</h2>
+        <ul>
+            <li>Ishlash kuchlanishi: 3.3V–5V DC</li>
+            <li>Signal turi: Infraqizil (IR), 38 kHz</li>
+            <li>Qabul masofasi: 5–10 m (atmosfera sharoitiga bog‘liq)</li>
+            <li>Yuboruvchi qurilma: IR masofadan boshqaruv pulti (NEC, RC-5 va boshqa protokollar)</li>
+            <li>Qabul qiluvchi chip: BC7210A yoki shunga o‘xshash</li>
+            <li>Ulanish interfeysi: Raqamli pinlar (OUT pini)</li>
+        </ul>
+        <p>Eslatma: Yorug‘lik yoki to‘sqinliklar IR signalning qabul qilish samaradorligini pasaytirishi mumkin.</p>
+    </div>
+
+    <div class="my-5">
+        <h2>Ilovalar</h2>
+        <p>NSW infraqizil masofadan boshqaruv moduli quyidagi loyihalarda qo‘llaniladi:</p>
+        <ul>
+            <li>Masofadan LED yoki chiroqlarni boshqarish</li>
+            <li>Robotlarning harakatini masofadan boshqarish</li>
+            <li>Interfeyslar uchun navigatsiya tugmalari</li>
+            <li>O‘yinchoqlar va ta’lim qurilmalari</li>
+            <li>Iqlim tizimlari yoki taymerlarni boshqarish</li>
+        </ul>
+    </div>
+
+    <div class="my-5">
+        <h2>Pin ta’rifi</h2>
+        <p>IR qabul qiluvchi modul quyidagi pinlarga ega:</p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Pin</th>
+                    <th>Vazifasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GND</td>
+                    <td>Manfiy quvvat </td>
+                </tr>
+                <tr>
+                    <td>VCC</td>
+                    <td>Quvvat manbai (3.3V yoki 5V)</td>
+                </tr>
+                <tr>
+                    <td>OUT</td>
+                    <td>Raqamli signal chiqishi</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="my-5">
+        <h2>Umumiy tahlil</h2>
+        <p>NSW infraqizil masofadan boshqaruv moduli 38 kHz chastotadagi IR signallarni qabul qilib, ularni raqamli (digital) signalga aylantiradi. Ushbu raqamli signal OUT pin orqali uzatiladi va Arduino tomonidan o‘qiladi. Modulning soddaligi va ixcham o‘lchamlari uni masofadan boshqaruv tizimlari, robototexnika va ta’lim loyihalarida qo‘llash uchun juda qulay qiladi.</p>
+    </div>
+
+
+    <div class="text-center my-5">
+        <a class="btn btn-lg custom-btn shadow-lg mx-2" href="/nsw_flamesensor" role="button">
+            <i class="fas fa-arrow-left"></i> Oldingi
+        </a>
+        <a class="btn btn-lg custom-btn shadow-lg mx-2" href="/nsw_7segment_display" role="button">
+            Keyingi <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</div>
+
+<style>
+.custom-btn {
+    background: linear-gradient(135deg, rgb(0, 217, 255), rgb(0, 150, 200));
+    color: white;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.custom-btn:hover {
+    background: linear-gradient(135deg, rgb(0, 150, 200), rgb(0, 217, 255));
+    transform: scale(1.05);
+    box-shadow: 0px 5px 15px rgba(0, 217, 255, 0.4);
+}
+
+.custom-btn i {
+    margin: 0 8px;
+}
+
+.code-container {
+    position: relative;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+    border-radius: 12px;
+    margin: 2rem 0;
+    padding: 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 2px solid #007bff;
+    transition: transform 0.3s ease;
+}
+
+.code-container:hover {
+    transform: translateY(-5px);
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    padding: 12px 20px;
+    border-bottom: 1px solid #004085;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.copy-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.copy-btn:hover {
+    background: #218838;
+    transform: scale(1.05);
+}
+
+.copy-btn.copied {
+    background: #17a2b8;
+}
+
+.copy-btn.copied::after {
+    content: "Nusxa olindi!";
+    position: absolute;
+    top: -30px;
+    right: 0;
+    background: #17a2b8;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    animation: fadeInOut 1.5s ease;
+}
+
+@@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(10px); }
+    20% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+}
+
+pre.line-numbers {
+    margin: 0;
+    padding: 20px;
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 0 0 12px 12px;
+}
+
+code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 15px;
+}
+
+.prism-coy .line-numbers-rows {
+    border-right: 1px solid #ddd;
+    padding-right: 10px;
+    margin-right: 10px;
+}
+
+.image-container {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.img-fluid {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid transparent;
+    background: linear-gradient(135deg, #007bff, #00d4ff) border-box;
+    border-radius: 10px;
+}
+
+.img-fluid:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+}
+
+.image-caption {
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+    font-style: italic;
+}
+</style>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("scrollToTop");
+        await JSRuntime.InvokeVoidAsync("openNavMenu");
+    }
+}
+
+<script>
+    window.scrollToTop = function () {
+        window.scrollTo(0, 0);
+    };
+
+    window.openNavMenu = function () {
+        let toggler = document.querySelector('.navbar-toggler');
+        if (toggler && !toggler.checked) {
+            toggler.click();
+        }
+    };
+
+    function copyCode(button) {
+        const code = button.parentElement.nextElementSibling.querySelector('code').textContent;
+        navigator.clipboard.writeText(code).then(() => {
+            button.classList.add('copied');
+            button.textContent = 'Nusxa olindi!';
+            setTimeout(() => {
+                button.classList.remove('copied');
+                button.textContent = 'Nusxa olish';
+            }, 2000);
+        });
+    }
+</script>

@@ -1,0 +1,345 @@
+﻿@page "/nsw_rgbled"
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+<NSWLayout />
+<br>
+<br>
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center">NSW RGB LED Moduli</h1>
+    <p class="lead text-center">Loyihalaringizni ranglar bilan yoritib bering</p>
+
+    <div class="my-5">
+        <h2>Umumiy ma’lumot</h2>
+        <p>NSW RGB LED Moduli turli ranglarni yaratish uchun mo‘ljallangan bo‘lib, robototexnika, avtomatlashtirish tizimlari va boshqa loyihalarda keng qo‘llaniladi. U Arduino va boshqa mikrokontrollerlar bilan mos keladi.</p>
+        <div class="image-container">
+            <img src="Images/rgbLED.jpg" alt="NSW RGB LED Moduli" class="img-fluid rounded shadow my-3" style="max-width: 150px;" loading="lazy">
+            <p class="image-caption">NSW RGB LED Moduli – rang-barang yoritish</p>
+        </div>
+    </div>
+
+    <div class="my-5">
+        <h2>Asosiy xususiyatlar</h2>
+        <ul>
+            <li>Ishlash kuchlanishi: 3.3V–5V DC</li>
+            <li>RGB ranglarini yaratish imkoniyati</li>
+            <li>PWM chiqishi uchun mos</li>
+            <li>Modul hajmi: 30×20×10 mm</li>
+        </ul>
+    </div>
+
+    <div class="my-5">
+        <h2>Ilovalar</h2>
+        <p>NSW RGB LED Moduli quyidagi loyihalarda qo‘llanilishi mumkin:</p>
+        <ul>
+            <li>Robototexnika</li>
+            <li>Avtomatlashtirish tizimlari</li>
+            <li>Yoritish effektlari</li>
+            <li>Mustaqil gadjetlar</li>
+            <li>Ta’lim loyihalari</li>
+        </ul>
+    </div>
+
+    <div class="my-5">
+        <h2>Pin ta’rifi</h2>
+        <p>NSW RGB LED Modulida quyidagi pinlar mavjud:</p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Pin</th>
+                    <th>Vazifasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>GND</td>
+                    <td>Manfiy manba</td>
+                </tr>
+                <tr>
+                    <td>VCC</td>
+                    <td>Quvvat manbai (3.3V yoki 5V)</td>
+                </tr>
+                <tr>
+                    <td>R</td>
+                    <td>Qizil rang uchun PWM signal</td>
+                </tr>
+                <tr>
+                    <td>G</td>
+                    <td>Yashil rang uchun PWM signal</td>
+                </tr>
+                <tr>
+                    <td>B</td>
+                    <td>Ko‘k rang uchun PWM signal</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="my-5">
+        <h2>Simlarni ulash rejimi</h2>
+        <p>● RJ25 bilan ulanish</p>
+        <p>NSW RGB LED Moduli RJ25 porti orqali ulanadi. Boshqaruv platasida RJ25 portidan foydalanganda, uni sariq rangli portga ulashingiz kerak.</p>
+        @* <div class="image-container">
+            <img src="Images/nsw_rgbled_rj25.jpg" alt="NSW RGB LED RJ25 ulanishi" class="img-fluid rounded shadow my-3" style="max-width: 400px;" loading="lazy">
+            <p class="image-caption">RJ25 porti orqali ulanish sxemasi</p>
+        </div> *@
+    </div>
+
+    <div class="my-5">
+        <h2>Dasturlash bo‘yicha qo‘llanma</h2>
+        <p>Arduino dasturlash</p>
+        <p>Arduino IDE yordamida NSW RGB LED Modulini boshqarish uchun quyidagi dastur namunasi ishlatilishi mumkin.</p>
+        
+        <div class="code-container">
+            <div class="code-header">
+                <span>Arduino dastur namunasi</span>
+                <button class="copy-btn" onclick="copyCode(this)" title="Nusxa olish">Nusxa olish</button>
+            </div>
+            <pre class="line-numbers"><code class="language-cpp">
+#include "NswRGBLed.h"
+
+// LED modulini boshqarish uchun NswRGBLed kutubxonasini ulaymiz
+// Kutubxona Adafruit_NeoPixel'dan foydalanadi, bu ranglar va vaqtni to'g'ri boshqaradi
+
+NswRGBLed led(PORT_4, ColorOrder::RGB); // PORT_4 (pin 9) va rang tartibi RGB sifatida o'rnatiladi
+// Agar ranglar hali ham noto'g'ri bo'lsa, ColorOrder::BRG, RBG va hokazolarni sinab ko'ring
+
+void setup() {
+  // LED modulini ishga tushirish
+  led.begin(); // LEDlarni boshlash va dastlabki sozlamalarni o'rnatish
+  led.setBrightness(50); // Yorqinlikni 50/255 ga o'rnatish (quvvat sarfini kamaytirish)
+}
+
+void loop() {
+  // Barcha LEDlarni turli ranglar bilan sinash
+  led.setColor(255, 0, 0); // Barcha LEDlarni yashil rangga o'rnatish (to'g'ri bo'lsa, qizil ko'rinadi)
+  led.show(); // LEDlarni yangilash va ko'rsatish
+  delay(2000); // 2 soniya kutish
+
+  led.setColor(0, 255, 0); // Barcha LEDlarni qizil rangga o'rnatish (to'g'ri bo'lsa, yashil ko'rinadi)
+  led.show();
+  delay(2000);
+
+  led.setColor(0, 0, 255); // Barcha LEDlarni ko'k rangga o'rnatish
+  led.show();
+  delay(2000);
+
+  led.setColor(255, 255, 0); // Barcha LEDlarni sariq rangga o'rnatish
+  led.show();
+  delay(2000);
+
+  led.setColor(0, 255, 255); // Barcha LEDlarni pushti rangga o'rnatish
+  led.show();
+  delay(2000);
+
+  led.setColor(255, 0, 255); // Barcha LEDlarni moviy rangga o'rnatish
+  led.show();
+  delay(2000);
+
+  led.setColor(255, 255, 255); // Barcha LEDlarni oq rangga o'rnatish
+  led.show();
+  delay(2000);
+
+  // Har bir LEDni alohida sinash
+  led.clear(); // Barcha LEDlarni o'chirish
+  led.setColor(0, 255, 0, 0); // 0-LEDni yashil rangga o'rnatish
+  led.setColor(1, 0, 255, 0); // 1-LEDni qizil rangga o'rnatish
+  led.setColor(2, 0, 0, 255); // 2-LEDni ko'k rangga o'rnatish
+  led.setColor(3, 255, 255, 255); // 3-LEDni oq rangga o'rnatish
+  led.show(); // LEDlarni yangilash va ko'rsatish
+  delay(2000); // 2 soniya kutish
+}
+            </code></pre>
+        </div>
+
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-coy.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+
+        <style>
+        .code-container {
+            position: relative;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+            border-radius: 12px;
+            margin: 2rem 0;
+            padding: 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 2px solid #007bff;
+            transition: transform 0.3s ease;
+        }
+
+        .code-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            padding: 12px 20px;
+            border-bottom: 1px solid #004085;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        .copy-btn.copied {
+            background: #17a2b8;
+        }
+
+        .copy-btn.copied::after {
+            content: "Nusxa olindi!";
+            position: absolute;
+            top: -30px;
+            right: 0;
+            background: #17a2b8;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            animation: fadeInOut 1.5s ease;
+        }
+
+        @@keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        pre.line-numbers {
+            margin: 0;
+            padding: 20px;
+            overflow-x: auto;
+            background: #fff;
+            border-radius: 0 0 12px 12px;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 15px;
+        }
+
+        .prism-coy .line-numbers-rows {
+            border-right: 1px solid #ddd;
+            padding-right: 10px;
+            margin-right: 10px;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+
+        .img-fluid {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, #007bff, #00d4ff) border-box;
+            border-radius: 10px;
+        }
+
+        .img-fluid:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+        }
+
+        .image-caption {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        </style>
+
+        <script>
+        function copyCode(button) {
+            const code = button.parentElement.nextElementSibling.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                button.classList.add('copied');
+                button.textContent = 'Nusxa olindi!';
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.textContent = 'Nusxa olish';
+                }, 2000);
+            });
+        }
+        </script>
+    </div>
+
+    <div class="my-5">
+        <h3>Umumiy tahlil</h3>
+        <p>NSW RGB LED Moduli RGB ranglarini PWM signallari orqali boshqarish va yaratish uchun mo‘ljallangan. R, G va B pinlari orqali analog signallar uzatiladi, bu esa turli rang kombinatsiyalarini yaratish imkonini beradi.</p>
+    </div>
+
+    <div class="text-center my-5">
+        <a class="btn btn-lg custom-btn shadow-lg mx-2" href="/nsw_ps2" role="button">
+            <i class="fas fa-arrow-left"></i> Oldingi
+        </a>
+        <a class="btn btn-lg custom-btn shadow-lg mx-2" href="/nsw_rj25adapter" role="button">
+            Keyingi <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</div>
+
+<style>
+.custom-btn {
+    background: linear-gradient(135deg, rgb(0, 217, 255), rgb(0, 150, 200));
+    color: white;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.custom-btn:hover {
+    background: linear-gradient(135deg, rgb(0, 150, 200), rgb(0, 217, 255));
+    transform: scale(1.05);
+    box-shadow: 0px 5px 15px rgba(0, 217, 255, 0.4);
+}
+
+.custom-btn i {
+    margin: 0 8px;
+}
+</style>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("scrollToTop");
+    }
+}
+
+<script>
+    window.scrollToTop = function () {
+        window.scrollTo(0, 0);
+    };
+</script>
